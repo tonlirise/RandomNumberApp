@@ -1,7 +1,5 @@
 package com.example.randomnumberapp.numbers.presentation
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import com.example.randomnumberapp.numbers.domain.NumberFact
 import com.example.randomnumberapp.numbers.domain.NumberFactToNumberUi
 import com.example.randomnumberapp.numbers.domain.NumbersInteractor
@@ -9,7 +7,7 @@ import com.example.randomnumberapp.numbers.domain.NumbersResult
 import org.junit.Assert.*
 import org.junit.Test
 
-class NumbersViewModelTest {
+class NumbersViewModelTest : TestBaseClass() {
 
     @Test
     fun `init and re-init test`() {
@@ -95,32 +93,6 @@ class NumbersViewModelTest {
 
         assertEquals(1, numCommunications.countCallShowHistory)
         assertEquals(NumberUi("45", " fact about 45"), numCommunications.showedHistoryListVal[0])
-    }
-
-    private class TestNumbersCommunications : NumbersCommunications {
-        val showedProgressVal = mutableListOf<Boolean>()
-        val showedCurrentStateVal = mutableListOf<UiState>()
-        var countCallShowHistory = 0
-        val showedHistoryListVal = mutableListOf<NumberUi>()
-
-        override fun showProgress(show: Boolean) {
-            showedProgressVal.add(show)
-        }
-
-        override fun showCurrentState(state: UiState) {
-            showedCurrentStateVal.add(state)
-        }
-
-        override fun showHistoryList(list: List<NumberUi>) {
-            countCallShowHistory++
-            showedHistoryListVal.addAll(list)
-        }
-
-        override fun observeProgress(lifecycleOwner: LifecycleOwner, observer: Observer<Boolean>) = Unit
-
-        override fun observeCurrentState(lifecycleOwner: LifecycleOwner, observer: Observer<UiState>) = Unit
-
-        override fun observeHistoryList(lifecycleOwner: LifecycleOwner, observer: Observer<List<NumberUi>>) = Unit
     }
 
     private class TestNumbersInteractor : NumbersInteractor {

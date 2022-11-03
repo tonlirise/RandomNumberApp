@@ -12,7 +12,7 @@ sealed class UiState {
         override fun <T> map(mapper: Mapper<T>) = mapper.map("")
     }
 
-    class Error(private val error: String) : UiState() {
+    data class Error(private val error: String) : UiState() {
         override fun <T> map(mapper: Mapper<T>) = mapper.map(error)
     }
 }
