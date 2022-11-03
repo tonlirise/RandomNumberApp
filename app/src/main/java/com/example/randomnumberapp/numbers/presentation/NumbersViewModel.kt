@@ -4,13 +4,15 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.randomnumberapp.R
 import com.example.randomnumberapp.numbers.domain.NumbersInteractor
 import kotlinx.coroutines.launch
 
 class NumbersViewModel(
+    private val handleResult: HandleNumbersRequest,
     private val communication: NumbersCommunications,
     private val interactor: NumbersInteractor,
-    private val numberResultMapper: NumberResultMapper
+    private val manageResources: ManageResources
 ) : ViewModel(), ObserveNumbers, FetchNumbers {
     override fun observeProgress(lifecycleOwner: LifecycleOwner, observer: Observer<Boolean>) {
         communication.observeProgress(lifecycleOwner, observer)
@@ -22,21 +24,23 @@ class NumbersViewModel(
 
     override fun init(isFirstRun: Boolean) {
         if (isFirstRun) {
-            communication.showProgress(show = true)
-            viewModelScope.launch {
-                val result = interactor.init()
-                communication.showProgress(show = false)
-                result.map(numberResultMapper)
+            handleResult.handle(viewModelScope) {
+                interactor.init()
             }
         }
     }
 
-    override fun fetchRandomNumberFact() {
-        TODO("Not yet implemented")
+    override fun fetchRandomNumberFact() = handleResult.handle(viewModelScope) {
+        interactor.factAboutRandomNumber()
     }
 
     override fun fetchNumberFact(number: String) {
-        TODO("Not yet implemented")
+        if (number.isEmpty())
+            communication.showCurrentState(UiState.Error(manageResources.getString(R.string.entered_number_is_empty)))
+        else
+            handleResult.handle(viewModelScope) {
+                interactor.factAboutNumber(number)
+            }
     }
 
     override fun observeHistoryList(lifecycleOwner: LifecycleOwner, observer: Observer<List<NumberUi>>) {

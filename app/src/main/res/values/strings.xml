@@ -3,4 +3,5 @@
     <string name="get_fact_about_number">get fact about number</string>
     <string name="get_random_fact">get random fact</string>
     <string name="input_a_number">input a number</string>
+    <string name="entered_number_is_empty">entered number is empty</string>
 </resources>
