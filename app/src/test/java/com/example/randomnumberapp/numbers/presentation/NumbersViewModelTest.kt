@@ -1,5 +1,11 @@
 package com.example.randomnumberapp.numbers.presentation
 
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
+import com.example.randomnumberapp.numbers.domain.NumberFact
+import com.example.randomnumberapp.numbers.domain.NumberFactToNumberUi
+import com.example.randomnumberapp.numbers.domain.NumbersInteractor
+import com.example.randomnumberapp.numbers.domain.NumbersResult
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -11,7 +17,7 @@ class NumbersViewModelTest {
         val numInteractor = TestNumbersInteractor()
 
         //initialize case
-        val viewModel = NumbersViewModel(numCommunications, numInteractor)
+        val viewModel = NumbersViewModel(numCommunications, numInteractor, NumberResultMapper(numCommunications, NumberFactToNumberUi()))
         numInteractor.changeExpectedResult(NumbersResult.Success())
         //2. action
         viewModel.init(isFirstRun = true)
@@ -21,7 +27,7 @@ class NumbersViewModelTest {
         assertEquals(false, numCommunications.showedProgressVal[1])
 
         assertEquals(1, numCommunications.showedCurrentStateVal.size)
-        assertEquals(UiState.Success(emptyList<NumberUI>()), numCommunications.showedCurrentStateVal[0])
+        assertEquals(UiState.Success(), numCommunications.showedCurrentStateVal[0])
 
         assertEquals(0, numCommunications.showedHistoryListVal.size)
         assertEquals(0, numCommunications.countCallShowHistory)
@@ -52,9 +58,9 @@ class NumbersViewModelTest {
         val numCommunications = TestNumbersCommunications()
         val numInteractor = TestNumbersInteractor()
 
-        val viewModel = NumbersViewModel(numCommunications, numInteractor)
+        val viewModel = NumbersViewModel(numCommunications, numInteractor, NumberResultMapper(numCommunications, NumberFactToNumberUi()))
 
-        viewModel.fetchFact("")
+        viewModel.fetchNumberFact("")
 
         assertEquals(0, numInteractor.fetchAboutNumberCalledList.size)
 
@@ -71,10 +77,10 @@ class NumbersViewModelTest {
         val numCommunications = TestNumbersCommunications()
         val numInteractor = TestNumbersInteractor()
 
-        val viewModel = NumbersViewModel(numCommunications, numInteractor)
+        val viewModel = NumbersViewModel(numCommunications, numInteractor, NumberResultMapper(numCommunications, NumberFactToNumberUi()))
 
         numInteractor.changeExpectedResult(NumbersResult.Success(listOf(NumberFact("45", "fact about 45"))))
-        viewModel.fetchFact("45")
+        viewModel.fetchNumberFact("45")
 
         assertEquals(true, numCommunications.showedProgressVal[0])
 
@@ -109,6 +115,12 @@ class NumbersViewModelTest {
             countCallShowHistory++
             showedHistoryListVal.addAll(list)
         }
+
+        override fun observeProgress(lifecycleOwner: LifecycleOwner, observer: Observer<Boolean>) = Unit
+
+        override fun observeCurrentState(lifecycleOwner: LifecycleOwner, observer: Observer<UiState>) = Unit
+
+        override fun observeHistoryList(lifecycleOwner: LifecycleOwner, observer: Observer<List<NumberUi>>) = Unit
     }
 
     private class TestNumbersInteractor : NumbersInteractor {
