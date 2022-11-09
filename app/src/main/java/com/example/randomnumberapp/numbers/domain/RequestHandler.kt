@@ -5,7 +5,7 @@ interface RequestHandler {
 
     class Base(
         private val repository: NumbersRepository,
-        private val errorHandler: ErrorHandler
+        private val errorHandler: ErrorHandler<String>
         ) : RequestHandler {
         override suspend fun handle(block: suspend () -> Unit): NumbersResult {
             return try {

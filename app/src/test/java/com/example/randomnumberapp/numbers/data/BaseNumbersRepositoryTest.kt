@@ -1,9 +1,14 @@
 package com.example.randomnumberapp.numbers.data
 
+import com.example.randomnumberapp.numbers.domain.ErrorHandler
+import com.example.randomnumberapp.numbers.domain.NoInternetConnectionException
+import com.example.randomnumberapp.numbers.domain.NumberFact
+import com.example.randomnumberapp.numbers.domain.NumbersRepository
 import org.junit.Assert.*
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
+import java.net.UnknownHostException
 
 class BaseNumbersRepositoryTest {
     private lateinit var repository: NumbersRepository
@@ -14,15 +19,16 @@ class BaseNumbersRepositoryTest {
     fun setUp() {
         cloudDataSource = TestNumbersCloudDataSource()
         cacheDataSource = TestNumbersCacheDataSource()
-        val mapper = NumberDataToDomain()
+        val mapper = MapperNumberDataToDomain()
         repository = BaseNumbersRepository(
             cloudDataSource,
             cacheDataSource,
-            HandleDataRequest.Base(
-                cacheDataSource, mapper,
-                HandleDomainError()
+            mapper,
+            RequestHandler.Base(
+                DataToDomainErrorHandler(),
+                mapper,
+                cacheDataSource
             ),
-            mapper
         )
     }
 
