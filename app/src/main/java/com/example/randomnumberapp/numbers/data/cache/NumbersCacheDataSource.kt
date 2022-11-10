@@ -1,4 +1,7 @@
-package com.example.randomnumberapp.numbers.data
+package com.example.randomnumberapp.numbers.data.cache
+
+import com.example.randomnumberapp.numbers.data.FetchNumber
+import com.example.randomnumberapp.numbers.data.NumberData
 
 interface NumbersCacheDataSource: FetchNumber {
     suspend fun allNumbers(): List<NumberData>

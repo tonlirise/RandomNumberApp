@@ -1,4 +1,4 @@
-package com.example.randomnumberapp.numbers.data
+package com.example.randomnumberapp.numbers.data.cloud
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

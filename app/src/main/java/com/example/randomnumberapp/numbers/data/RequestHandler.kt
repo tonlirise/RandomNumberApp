@@ -1,5 +1,6 @@
 package com.example.randomnumberapp.numbers.data
 
+import com.example.randomnumberapp.numbers.data.cache.NumbersCacheDataSource
 import com.example.randomnumberapp.numbers.domain.NumberFact
 
 interface RequestHandler {

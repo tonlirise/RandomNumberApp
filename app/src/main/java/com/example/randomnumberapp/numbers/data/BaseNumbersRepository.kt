@@ -1,5 +1,7 @@
 package com.example.randomnumberapp.numbers.data
 
+import com.example.randomnumberapp.numbers.data.cache.NumbersCacheDataSource
+import com.example.randomnumberapp.numbers.data.cloud.NumbersCloudDataSource
 import com.example.randomnumberapp.numbers.domain.NumberFact
 import com.example.randomnumberapp.numbers.domain.NumbersRepository
 
