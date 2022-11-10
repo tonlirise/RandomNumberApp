@@ -1,6 +1,6 @@
 package com.example.randomnumberapp.numbers.data
 
-data class NumberData(val id: String, val fact: String) {
+data class NumberData(private val id: String, private val fact: String) {
     interface Mapper<T> {
         fun map(id: String, fact: String): T
 
