@@ -5,12 +5,12 @@ import androidx.lifecycle.Observer
 
 abstract class TestBaseClass {
     protected class TestNumbersCommunications : NumbersCommunications {
-        val showedProgressVal = mutableListOf<Boolean>()
+        val showedProgressVal = mutableListOf<Int>()
         val showedCurrentStateVal = mutableListOf<UiState>()
         var countCallShowHistory = 0
         val showedHistoryListVal = mutableListOf<NumberUi>()
 
-        override fun showProgress(show: Boolean) {
+        override fun showProgress(show: Int) {
             showedProgressVal.add(show)
         }
 
@@ -23,7 +23,7 @@ abstract class TestBaseClass {
             showedHistoryListVal.addAll(list)
         }
 
-        override fun observeProgress(lifecycleOwner: LifecycleOwner, observer: Observer<Boolean>) = Unit
+        override fun observeProgress(lifecycleOwner: LifecycleOwner, observer: Observer<Int>) = Unit
 
         override fun observeCurrentState(lifecycleOwner: LifecycleOwner, observer: Observer<UiState>) = Unit
 

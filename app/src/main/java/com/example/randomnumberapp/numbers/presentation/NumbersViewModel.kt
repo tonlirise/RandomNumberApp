@@ -14,7 +14,7 @@ class NumbersViewModel(
     private val interactor: NumbersInteractor,
     private val manageResources: ManageResources
 ) : ViewModel(), ObserveNumbers, FetchNumbers {
-    override fun observeProgress(lifecycleOwner: LifecycleOwner, observer: Observer<Boolean>) {
+    override fun observeProgress(lifecycleOwner: LifecycleOwner, observer: Observer<Int>) {
         communication.observeProgress(lifecycleOwner, observer)
     }
 

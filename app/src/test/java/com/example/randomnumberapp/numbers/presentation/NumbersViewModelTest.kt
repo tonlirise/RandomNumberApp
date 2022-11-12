@@ -1,5 +1,6 @@
 package com.example.randomnumberapp.numbers.presentation
 
+import android.view.View
 import com.example.randomnumberapp.numbers.domain.NumberFact
 import com.example.randomnumberapp.numbers.domain.NumberFactToNumberUi
 import com.example.randomnumberapp.numbers.domain.NumbersInteractor
@@ -40,8 +41,8 @@ class NumbersViewModelTest : TestBaseClass() {
         viewModel.init(isFirstRun = true)
 
         assertEquals(2, numCommunications.showedProgressVal.size)
-        assertEquals(true, numCommunications.showedProgressVal[0])
-        assertEquals(false, numCommunications.showedProgressVal[1])
+        assertEquals(View.VISIBLE, numCommunications.showedProgressVal[0])
+        assertEquals(View.GONE, numCommunications.showedProgressVal[1])
 
         assertEquals(1, numCommunications.showedCurrentStateVal.size)
         assertEquals(true, numCommunications.showedCurrentStateVal[0] is UiState.Success)
@@ -53,12 +54,12 @@ class NumbersViewModelTest : TestBaseClass() {
         numInteractor.changeExpectedResult(NumbersResult.Failure("no internet connection"))
         viewModel.fetchRandomNumberFact()
 
-        assertEquals(true, numCommunications.showedProgressVal[2])
+        assertEquals(View.VISIBLE, numCommunications.showedProgressVal[2])
 
         assertEquals(1, numInteractor.fetchAboutRandomNumberCalledList.size)
 
         assertEquals(4, numCommunications.showedProgressVal.size)
-        assertEquals(false, numCommunications.showedProgressVal[3])
+        assertEquals(View.GONE, numCommunications.showedProgressVal[3])
 
         assertEquals(2, numCommunications.showedCurrentStateVal.size)
         assertEquals(UiState.Error("no internet connection"), numCommunications.showedCurrentStateVal[1])
@@ -90,7 +91,7 @@ class NumbersViewModelTest : TestBaseClass() {
         numInteractor.changeExpectedResult(NumbersResult.Success(listOf(NumberFact("45", "fact about 45"))))
         viewModel.fetchNumberFact("45")
 
-        assertEquals(true, numCommunications.showedProgressVal[0])
+        assertEquals(View.VISIBLE, numCommunications.showedProgressVal[0])
 
         assertEquals(1, numInteractor.fetchAboutNumberCalledList.size)
         assertEquals(
@@ -99,7 +100,7 @@ class NumbersViewModelTest : TestBaseClass() {
         )
 
         assertEquals(2, numCommunications.showedProgressVal.size)
-        assertEquals(false, numCommunications.showedProgressVal[1])
+        assertEquals(View.GONE, numCommunications.showedProgressVal[1])
 
         assertEquals(1, numCommunications.showedCurrentStateVal.size)
         assertEquals(true, numCommunications.showedCurrentStateVal[0] is UiState.Success)
