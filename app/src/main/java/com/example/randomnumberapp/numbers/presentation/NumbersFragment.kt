@@ -2,6 +2,8 @@ package com.example.randomnumberapp.numbers.presentation
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +36,13 @@ class NumbersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        numbersBinding.inputEditText.addTextChangedListener(object : SimpleTextWatcher() {
+            override fun afterTextChanged(p0: Editable?) = with(numbersBinding.inputLayout) {
+                numberViewModel.clearError()
+            }
+        })
+
+
         val diffUtilCallBack = DiffUtilCallback()
         val clickCallBack = object : OnNumberItemClickListener {
             override fun onClickListener(number: NumberUi) {
@@ -49,7 +58,7 @@ class NumbersFragment : Fragment() {
             }
 
             observeCurrentState(viewLifecycleOwner) {
-
+                it.apply(numbersBinding.inputEditText, numbersBinding.inputLayout)
             }
 
             observeHistoryList(viewLifecycleOwner) { lsit ->
@@ -64,4 +73,12 @@ class NumbersFragment : Fragment() {
         _numbersBinding = null
         showFragment = ShowFragment.Base()
     }
+}
+
+abstract class SimpleTextWatcher : TextWatcher {
+    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
+
+    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
+
+    override fun afterTextChanged(p0: Editable?) = Unit
 }

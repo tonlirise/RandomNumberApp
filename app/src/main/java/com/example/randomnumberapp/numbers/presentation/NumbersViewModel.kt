@@ -6,14 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.randomnumberapp.R
 import com.example.randomnumberapp.numbers.domain.NumbersInteractor
-import kotlinx.coroutines.launch
 
 class NumbersViewModel(
     private val handleResult: HandleNumbersRequest,
     private val communication: NumbersCommunications,
     private val interactor: NumbersInteractor,
     private val manageResources: ManageResources
-) : ViewModel(), ObserveNumbers, FetchNumbers {
+) : ViewModel(), ObserveNumbers, FetchNumbers, ClearError {
     override fun observeProgress(lifecycleOwner: LifecycleOwner, observer: Observer<Int>) {
         communication.observeProgress(lifecycleOwner, observer)
     }
@@ -36,7 +35,7 @@ class NumbersViewModel(
 
     override fun fetchNumberFact(number: String) {
         if (number.isEmpty())
-            communication.showCurrentState(UiState.Error(manageResources.getString(R.string.entered_number_is_empty)))
+            communication.showCurrentState(UiState.ShowError(manageResources.getString(R.string.entered_number_is_empty)))
         else
             handleResult.handle(viewModelScope) {
                 interactor.factAboutNumber(number)
@@ -45,6 +44,10 @@ class NumbersViewModel(
 
     override fun observeHistoryList(lifecycleOwner: LifecycleOwner, observer: Observer<List<NumberUi>>) {
         communication.observeHistoryList(lifecycleOwner, observer)
+    }
+
+    override fun clearError() {
+        communication.showCurrentState(UiState.ClearError())
     }
 }
 
@@ -55,4 +58,8 @@ interface FetchNumbers {
     fun fetchRandomNumberFact()
 
     fun fetchNumberFact(number: String)
+}
+
+interface ClearError {
+    fun clearError()
 }

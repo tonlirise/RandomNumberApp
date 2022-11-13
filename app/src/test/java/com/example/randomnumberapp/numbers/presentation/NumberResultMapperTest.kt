@@ -14,7 +14,7 @@ class NumberResultMapperTest : TestBaseClass() {
         val numberResultMapper = NumberResultMapper(communication, NumberFactToNumberUi())
         numberResultMapper.map(emptyList(), errorMessage)
 
-        assertEquals(UiState.Error(errorMessage), communication.showedCurrentStateVal[0])
+        assertEquals(UiState.ShowError(errorMessage), communication.showedCurrentStateVal[0])
     }
 
     @Test

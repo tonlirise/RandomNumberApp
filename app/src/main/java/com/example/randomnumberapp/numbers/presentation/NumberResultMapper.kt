@@ -15,7 +15,7 @@ class NumberResultMapper(
                 }
                 UiState.Success()
             } else {
-                UiState.Error(error)
+                UiState.ShowError(error)
             }
         )
     }

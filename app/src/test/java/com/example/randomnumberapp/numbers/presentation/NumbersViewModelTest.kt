@@ -62,7 +62,7 @@ class NumbersViewModelTest : TestBaseClass() {
         assertEquals(View.GONE, numCommunications.showedProgressVal[3])
 
         assertEquals(2, numCommunications.showedCurrentStateVal.size)
-        assertEquals(UiState.Error("no internet connection"), numCommunications.showedCurrentStateVal[1])
+        assertEquals(UiState.ShowError("no internet connection"), numCommunications.showedCurrentStateVal[1])
         assertEquals(0, numCommunications.countCallShowHistory)
 
         viewModel.init(isFirstRun = false)
@@ -81,7 +81,7 @@ class NumbersViewModelTest : TestBaseClass() {
         assertEquals(0, numCommunications.showedProgressVal.size)
 
         assertEquals(1, numCommunications.showedCurrentStateVal.size)
-        assertEquals(UiState.Error("entered number is empty"), numCommunications.showedCurrentStateVal[0])
+        assertEquals(UiState.ShowError("entered number is empty"), numCommunications.showedCurrentStateVal[0])
 
         assertEquals(0, numCommunications.countCallShowHistory)
     }
@@ -107,6 +107,13 @@ class NumbersViewModelTest : TestBaseClass() {
 
         assertEquals(1, numCommunications.countCallShowHistory)
         assertEquals(NumberUi("45", "fact about 45"), numCommunications.showedHistoryListVal[0])
+    }
+
+    @Test
+    fun `test clear error`(){
+        viewModel.clearError()
+        assertEquals(1, numCommunications.showedCurrentStateVal.size)
+        assertEquals(true, numCommunications.showedCurrentStateVal[0] is UiState.ClearError)
     }
 
     private class TestManageResources : ManageResources {
