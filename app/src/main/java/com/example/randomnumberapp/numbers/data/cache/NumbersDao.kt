@@ -9,7 +9,7 @@ import com.example.randomnumberapp.numbers.data.NumberData
 @Dao
 interface NumbersDao {
 
-    @Query("SELECT * FROM numbers_table ORDER BY date ASC")
+    @Query("SELECT * FROM numbers_table ORDER BY date DESC")
     fun allNumbers() : List<NumberCache>
 
     @Query("SELECT * FROM numbers_table WHERE number = :num")
