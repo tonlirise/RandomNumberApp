@@ -25,7 +25,7 @@ class BaseNumbersRepositoryTest {
             cloudDataSource,
             cacheDataSource,
             mapper,
-            RequestHandler.Base(
+            RequestDataHandler.Base(
                 DataToDomainErrorHandler(),
                 mapper,
                 cacheDataSource

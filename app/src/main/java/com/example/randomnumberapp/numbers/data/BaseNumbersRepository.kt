@@ -9,7 +9,7 @@ class BaseNumbersRepository(
     private val cloudDataSource: NumbersCloudDataSource,
     private val cacheDataSource: NumbersCacheDataSource,
     private val mapper: MapperNumberDataToDomain,
-    private val requestHandler: RequestHandler
+    private val requestHandler: RequestDataHandler
 ) : NumbersRepository {
     override suspend fun allNumbers() = cacheDataSource.allNumbers().map { it.map(mapper) }
 
