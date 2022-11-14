@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.randomnumberapp.databinding.FragmentNumbersBinding
+import com.example.randomnumberapp.detail.presentation.DetailFragment
 import com.example.randomnumberapp.main.presentation.ShowFragment
+import com.example.randomnumberapp.main.sl.ProvideViewModel
 import com.example.randomnumberapp.numbers.presentation.adapter.DiffUtilCallback
 import com.example.randomnumberapp.numbers.presentation.adapter.NumbersAdapter
 import com.example.randomnumberapp.numbers.presentation.adapter.OnNumberItemClickListener
@@ -29,6 +31,9 @@ class NumbersFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        numberViewModel = (requireActivity() as ProvideViewModel).provideViewModel(NumbersViewModel::class.java, this)
+
         _numbersBinding = FragmentNumbersBinding.inflate(inflater, container, false)
         return numbersBinding.root
     }
@@ -36,21 +41,30 @@ class NumbersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        numbersBinding.inputEditText.addTextChangedListener(object : SimpleTextWatcher() {
-            override fun afterTextChanged(p0: Editable?) = with(numbersBinding.inputLayout) {
-                numberViewModel.clearError()
-            }
-        })
-
-
         val diffUtilCallBack = DiffUtilCallback()
         val clickCallBack = object : OnNumberItemClickListener {
             override fun onClickListener(number: NumberUi) {
-                TODO("Not yet implemented")
+                showFragment.show(DetailFragment.getNewInstance(number.ui()))
             }
         }
         val numAdapter = NumbersAdapter(diffUtilCallBack, clickCallBack)
         numbersBinding.recyclerHistory.adapter = numAdapter
+
+        with(numbersBinding) {
+            inputEditText.addTextChangedListener(object : SimpleTextWatcher() {
+                override fun afterTextChanged(p0: Editable?) = with(numbersBinding.inputLayout) {
+                    numberViewModel.clearError()
+                }
+            })
+
+            btnGetFact.setOnClickListener {
+                numberViewModel.fetchNumberFact(inputEditText.text.toString())
+            }
+
+            btnGetRandomFact.setOnClickListener {
+                numberViewModel.fetchRandomNumberFact()
+            }
+        }
 
         with(numberViewModel) {
             observeProgress(viewLifecycleOwner) { visibility ->
@@ -66,6 +80,7 @@ class NumbersFragment : Fragment() {
             }
         }
 
+        numberViewModel.init(savedInstanceState == null)
     }
 
     override fun onDetach() {

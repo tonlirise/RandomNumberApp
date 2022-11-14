@@ -11,6 +11,8 @@ data class NumberUi(
         main.text = fact
     }
 
+    fun ui() = "$num\n\n$fact"
+
     override fun map(source: NumberUi): Boolean {
         return source.num == num
     }
