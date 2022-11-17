@@ -12,3 +12,7 @@
 
 ---
 MVVM, Clean Architecture, Service locator pattern, RecyclerView, Room, Retrofit, Сoroutines, ViewModel, LiveData, WorkManager.
+
+---
+inspired by
+https://youtube.com/playlist?list=PLQRyeBV1rkk25DY7C2wPhAukxpDdoeuPf
